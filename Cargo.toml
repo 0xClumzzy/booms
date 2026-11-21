@@ -1,0 +1,46 @@
+[package]
+name = "booms"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "A small, safe TUI framework in Rust: cell grid renderer, layout engine, widgets, crystal orb animations, and an event loop."
+license = "MIT"
+readme = "README.md"
+keywords = ["tui", "terminal", "gui", "tui-framework", "ratatui", "animation", "widget"]
+categories = ["command-line-utilities", "gui", "rendering"]
+repository = "https://github.com/clumzzy/booms"
+homepage = "https://github.com/clumzzy/booms"
+documentation = "https://docs.rs/booms"
+# MSRV: 1.85 (declared in rust-version). Pinning to a specific version ensures
+# users know the minimum; update this and rust-version together when bumping.
+
+[dependencies]
+crossterm = "0.29"
+unicode-width = "0.1"
+wgpu = { version = "30", optional = true }
+pollster = { version = "1.0", optional = true }
+# Native ratatui support: render real ratatui widgets inside booms. Opt-in
+# because it pulls a large dependency tree; only compiled with --features ratatui.
+ratatui = { version = "0.30", optional = true, default-features = false, features = ["std"] }
+
+[features]
+default = []
+# Headless GPU rendering: an offscreen wgpu pipeline reads pixels back into
+# terminal cells. Heavy dependency + needs a GPU/software adapter at runtime.
+gpu = ["dep:wgpu", "dep:pollster"]
+# Render real ratatui widgets (Paragraph, Table, Gauge, ...) inside booms via
+# the [`RatatuiView`](crate::widgets::RatatuiView) adapter.
+ratatui = ["dep:ratatui"]
+
+[[example]]
+name = "gpu"
+required-features = ["gpu"]
+
+[[example]]
+name = "native_ratatui"
+required-features = ["ratatui"]
+
+[lints]
+# The public API and its docs are the point of this crate; keep warnings off
+# the default path so the build stays clean while developing it.
+rust.warnings = "allow"

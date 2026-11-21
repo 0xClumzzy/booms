@@ -1,0 +1,23 @@
+# Build artifacts
+/target
+**/*.rs.bk
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+
+# Cargo
+Cargo.lock
+
+# Docs
+doc/
+
+# Coverage
+coverage/
+*.profraw
+*.profdata
